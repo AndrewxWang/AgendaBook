@@ -16,8 +16,9 @@ def edit_hw(agenda):
     if str(r_class).lower()in ag:
         print("Class found!")
         r_edit = input("Enter new homework: ")
-        count = agenda.count(r_class)
+        count = ag.index(r_class.lower())
         agenda[count][1] = r_edit
+        print(count)
         with open("agenda", "r") as r:
             r_agenda = r.readlines()
             r_agenda[count] = r_edit + "\n"
@@ -70,7 +71,7 @@ agenda = []
 for x in range(len(r_class)):
     agenda.append([r_class[x], r_ad[x]])
 
-print("Online Agenda Book: By Andrwe Wang")
+print("Online Agenda Book: By Andrew Wang")
 while(True):
     print("")
     print("========")
