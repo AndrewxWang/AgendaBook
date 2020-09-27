@@ -1,4 +1,46 @@
-import time
+import time, sys
+
+def checkFiles():
+    exceptions = 0
+    try:
+        with open("classes", "r") as r:
+            pass
+    except:
+        print("No \"classes\" file was found")
+        print("Creating \"classes\" file...")
+        time.sleep(1)
+        r = open("classes","w+")
+        print("\"classes\" was created!")
+        exceptions+=1
+    print("")
+    try:
+        with open("agenda", "r") as r:
+            pass
+    except:
+        print("No \"agenda\" file was found")
+        print("Creating \"agenda\" file...")
+        time.sleep(1)
+        r = open("agenda","w+")
+        print("\"agenda\" was created!")
+        exceptions+=1
+    print("")
+    if (exceptions > 0):
+        print("Restart program to use")
+        time.sleep(5)
+        sys.exit()
+
+def make_agenda():
+    with open("classes", "r") as r:
+        r_class = r.readlines()
+        r_class = [sub[ : -1] for sub in r_class]
+        set_hw()
+    with open("agenda", "r") as r:
+        r_ad = r.readlines()
+        r_ad = [sub[:-1] for sub in r_ad]
+    agenda = []
+    for x in range(len(r_class)):
+        agenda.append([r_class[x], r_ad[x]])
+    return agenda
 
 def print_agenda(agenda):
     print("Agenda:")
@@ -28,10 +70,19 @@ def edit_hw(agenda):
     else:
         print("Class was not found.")
 
-def edit_class(agenda):
-    pass
-def reset(agenda):
-    pass
+def reset():
+    with open ("classes", "r+") as r:
+        r.truncate(0)
+        r.close()
+    with open("agenda", "r+") as f:
+        f.truncate(0)
+        f.close()
+    print("Everything has been reset.")
+    print("Restart the program to use.")
+    time.sleep(5)
+    sys.exit()
+        
+
 def set_classes():
     with open("classes", "r") as r:
         read = r.read()
@@ -54,22 +105,9 @@ def set_hw():
                 f.write(myAgenda)
                 f.write("\n")
 
+checkFiles()
 set_classes()
-
-with open("classes", "r") as r:
-    r_class = r.readlines()
-    r_class = [sub[ : -1] for sub in r_class]
-    
-    
-set_hw()
-
-with open("agenda", "r") as r:
-    r_ad = r.readlines()
-    r_ad = [sub[:-1] for sub in r_ad]
-
-agenda = []
-for x in range(len(r_class)):
-    agenda.append([r_class[x], r_ad[x]])
+agenda = make_agenda()
 
 print("Online Agenda Book: By Andrew Wang")
 while(True):
@@ -78,25 +116,20 @@ while(True):
     print_agenda(agenda)
     print("")
     print("[0] = edit homework")
-    print("[1] = edit class")
-    print("[2] = reset everything")
-    print("[3] = exit")
+    print("[1] = reset everything")
+    print("[2] = exit")
     inp = input("Select number: ")
 
     if inp == "0":
         print("Editing homework...")
-        time.sleep(1)
         print("")
         edit_hw(agenda)
     elif inp == "1":
-        print("Editing class...")
-        time.sleep(1)
-        print("")
-        edit_class(agenda)
+        inp2 = input("Are you sure you want to reset everything? (y/n): ")
+        if inp2.lower() == "y":
+            reset()
+        print("Nothing was changed.")
     elif inp == "2":
-        #have yes or no option
-        reset(agenda)
-    elif inp == "3":
         print("Exiting program...")
         time.sleep(1)
         print("")
