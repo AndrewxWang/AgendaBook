@@ -33,7 +33,7 @@ def make_agenda():
     with open("classes", "r") as r:
         r_class = r.readlines()
         r_class = [sub[ : -1] for sub in r_class]
-        set_hw()
+        set_hw(r_class)
     with open("agenda", "r") as r:
         r_ad = r.readlines()
         r_ad = [sub[:-1] for sub in r_ad]
@@ -43,6 +43,7 @@ def make_agenda():
     return agenda
 
 def print_agenda(agenda):
+    print("")
     print("Agenda:")
     print("========")
     for x in agenda:
@@ -95,7 +96,7 @@ def set_classes():
                 f.write(myClass)
                 f.write("\n")
 
-def set_hw():
+def set_hw(r_class):
     with open("agenda", "r") as r:
         r_ad = r.read()
     if r_ad == "":
